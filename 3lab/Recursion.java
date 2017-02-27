@@ -65,21 +65,21 @@ public class Recursion {
 	else{
 	    if (str.contains("()")){
 		int bunchIndex1 = str.indexOf("()");
-		str = (str.substring(0, bunchIndex1) + str.substring(0, (bunchIndex1 + 2)));
-		System.out.println(str+"1");
+		str = (str.substring(0, bunchIndex1) + str.substring((bunchIndex1 + 2), (str.length())));
+		//System.out.println(str+"1");
 		return isBalanced(str);
 	    } else if (str.contains("[]")){
 		int bunchIndex2 = str.indexOf("[]");
-		str = (str.substring(0, bunchIndex2) + str.substring(0, (bunchIndex2 + 2)));
-		System.out.println(str+"2");
+		str = (str.substring(0, bunchIndex2) + str.substring((bunchIndex2 + 2), (str.length())));
+		//System.out.println(str+"2");
 		return isBalanced(str);
 	    } else if (str.contains("{}")){
 		int bunchIndex3 = str.indexOf("{}");
-		str = (str.substring(0, bunchIndex3) + str.substring(0, (bunchIndex3 + 2)));
-		System.out.println(str+"3");
+		str = (str.substring(0, bunchIndex3) + str.substring((bunchIndex3 + 2), (str.length())));
+		//System.out.println(str+"3");
 		return isBalanced(str);
 	    } else{
-		System.out.println("got here");
+		//System.out.print("got here");
 		return false;
 	    }
 	}
@@ -91,20 +91,45 @@ public class Recursion {
     /*
      * Print all substrings of str.  (Order does not matter.)
      */
-    public static void printSubstrings(String str) {
-
+    public static void printSubstringsHelper(String str, String soFar) {
+	if ( !str.isEmpty()){ 
+	    printSubstringsHelper(str.substring(1), "");
+	    soFar = soFar + str.charAt(0);
+	    System.out.println(soFar); 
+	    printSubstringsHelper(str.substring(1), soFar);
+	}
+	
+	
     }
-
+    
+    public static void printSubstrings(String str){
+	if (str == ""){
+	    System.out.print("");
+	} else{
+	    printSubstringsHelper(str, "");
+	}
+    }
+    
     /*****  5  ***************************************************/
 
     /*
      * Print number in binary
      */
     public static void printInBinary(int number) {
-
+	if (number == 1){
+	    System.out.print(1);
+	} else if (number == 0){
+	    System.out.println(0);
+	}
+	else{
+	    int leastsig = number % 2;
+	    number = number / 2;
+	    printInBinary(number);
+	    System.out.print(leastsig);
+	}
     }
-
-
+    
+    
     /*****  6  ***************************************************/
 
     /*
@@ -153,7 +178,14 @@ public class Recursion {
 
 	// test code for problem 3
 	System.out.println(isBalanced("[{()}]"));
-	//System.out.println(isBalanced("[()()]"));
-	//System.out.println(isBalanced("[((]"));
+	System.out.println(isBalanced("[()]()]"));
+	System.out.println(isBalanced("[((]"));
+
+	// test code for problem 4
+	printSubstrings("bcd");
+	// test code for problem 5
+	printInBinary(0);
+
+	// test code for problem 6
     }
 }
