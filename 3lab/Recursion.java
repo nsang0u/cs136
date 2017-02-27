@@ -6,7 +6,6 @@
  * Starter code for the recursion lab.
  *
  */
-import structure5.*;
 
 public class Recursion {
 
@@ -152,7 +151,7 @@ public class Recursion {
 	System.out.println("!!" + isPalindrome("[(())]"));
 
 	// test code for problem 3
-	System.out.println(isBalanced("[{()}]"));
+	//System.out.println(isBalanced("[{()}]"));
 	//System.out.println(isBalanced("[()()]"));
 	//System.out.println(isBalanced("[((]"));
     }
