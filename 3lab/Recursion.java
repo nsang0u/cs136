@@ -97,9 +97,7 @@ public class Recursion {
 	    soFar = soFar + str.charAt(0);
 	    System.out.println(soFar); 
 	    printSubstringsHelper(str.substring(1), soFar);
-	}
-	
-	
+	}	
     }
     
     public static void printSubstrings(String str){
@@ -138,10 +136,19 @@ public class Recursion {
      */
     public static boolean printSubSetSum(int nums[], 
 					 int targetSum) {
-	return false;
+	return printSubSetSumHelper(nums, targetSum, 0);
     }
 
-
+    public static boolean printSubSetSumHelper(int nums[], int targetSum, int index){
+	if (nums.length == index) {
+	    return (targetSum == 0);
+	    System.out.print(nums[index]);
+	} else{
+	    return printSubSetSumHelper(nums, targetSum - nums[index], index + 1) ||
+		printSubSetSumHelper(nums, targetSum, index + 1);
+	}
+    }
+    
     /*
      * Return the number of different ways elements in nums can be
      * added together to equal sum.
@@ -151,15 +158,7 @@ public class Recursion {
 	return 0;
     }
 
-
-
-    /*****  7  ***************************************************/
     
-    public static void listCompletions(String digitSequence, 
-				       Lexicon lex) {
-    
-    }
-
     /**************************************************************/
     
     /*
@@ -187,5 +186,7 @@ public class Recursion {
 	printInBinary(0);
 
 	// test code for problem 6
+	int[] set = {3, 4, 9, 6};
+	printSubSetSum(set, 7);
     }
 }
