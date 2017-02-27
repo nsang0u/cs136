@@ -137,7 +137,17 @@ public class Recursion {
      */
     public static boolean printSubSetSum(int nums[], 
 					 int targetSum) {
-	return false;
+	return printSubSetSumHelper(nums, targetSum, 0);
+    }
+
+    public static boolean printSubSetSumHelper(int nums[], int targetSum, int index){
+	if (nums.length == index){
+	    System.out.print(nums[index]);
+	    return (targetSum == 0);
+	} else{
+	    return printSubSetSumHelper(nums, targetSum - nums[index], index + 1) ||
+		printSubSetSumHelper(nums, targetSum, index + 1);
+	}
     }
 
 
