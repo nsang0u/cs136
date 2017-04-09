@@ -1,0 +1,23 @@
+import java.util.*j;
+import structure5.*;
+/* Noah Nsangou */
+
+public class Interpreter{
+
+    Stack<Token> valueStack = new Stack<Token>();
+
+    public void interpret(Reader read){
+	
+	
+    }
+
+
+
+
+    public static void main{
+	
+	
+    }
+
+    
+}
