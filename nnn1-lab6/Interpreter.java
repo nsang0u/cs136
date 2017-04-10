@@ -41,6 +41,18 @@ public class Interpreter{
 		case "div":
 		    div();
 		    break;
+		case "dup":
+		    dup();
+		    break;
+		case "exch":
+		    exch();
+		    break;
+		case "eq":
+		    eq();
+		    break;
+		case "ne":
+		    ne();
+		    break;
 		}
 	    }
 	}
@@ -126,6 +138,47 @@ public class Interpreter{
 	double quotTemp = numerDub / denomDub;
 	Token quotTempTok = new Token(quotTemp);
 	valueStack.push(quotTempTok);
+    }
+
+    public void dup(){
+	Assert.condition((valueStack.size() == 1), "Valuestack size is " + valueStack.size());
+	Token curTok = valueStack.peek();
+	Token dupTok = new Token(curTok.getNumber());
+	valueStack.push(dupTok);
+	//peek and pop
+    }
+
+    public void exch(){
+	//pop 1, pop 2, push 1, push 2
+	Assert.condition((valueStack.size() == 2), "Valuestack size is " + valueStack.size());
+	Token putFirst = valueStack.pop();
+	Token putSecond = valueStack.pop();
+	valueStack.push(putFirst);
+	valueStack.push(putSecond);
+	Assert.condition((valueStack.size() == 2), "Valuestack size is " + valueStack.size());
+    }
+
+
+    public void eq(){
+	Assert.condition((valueStack.size() == 2), "Valuestack size is " + valueStack.size());
+	Token tok1 = valueStack.pop();
+	Token tok2 = valueStack.pop();
+	if (tok1.equals(tok2)){
+	    valueStack.push(new Token(true));
+	} else{
+	    valueStack.push(new Token(false));
+	}
+    }
+
+    public void ne(){
+	Assert.condition((valueStack.size() == 2), "Valuestack size is " + valueStack.size());
+	Token tok1 = valueStack.pop();
+	Token tok2 = valueStack.pop();
+	if (!(tok1.equals(tok2))){
+	    valueStack.push(new Token(true));
+	} else{
+	    valueStack.push(new Token(false));
+	}
     }
     
     public static void main(String[] args){
