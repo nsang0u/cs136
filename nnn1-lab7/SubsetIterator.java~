@@ -1,0 +1,18 @@
+import structure5.*;
+/* Noah Nsangou */
+
+public class SubsetIterator<E> implements Iterator<E>{
+
+    public SubsetIterator(Iterator<E> iter, int bitMask){
+	
+    }
+    
+    public E next(){
+	
+    }
+    
+    public void remove(){
+	
+    }
+
+    
