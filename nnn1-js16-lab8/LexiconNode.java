@@ -55,7 +55,15 @@ class LexiconNode implements Comparable<LexiconNode> {
 	 * Remove LexiconNode child for 'ch' from child data structure
 	 */
     public void removeChild(char ch) {
-	childVect.remove(Character.getNumericValue(ch) - 10); //10 because -9 in unicode and then -1 for vector index
+	int pos = ch - 'a';
+	//childVect.set(Character.getNumericValue(ch) - 10, null); //10 because -9 in unicode and then -1 for vector index
+	//System.out.println(pos);
+	//System.out.println("print before remove child: ");
+	//print();
+	childVect.remove(pos);
+	childVect.add(pos, null);
+	//System.out.println("print after remove/add");
+	//print();
     }
 
     /**
@@ -78,6 +86,12 @@ class LexiconNode implements Comparable<LexiconNode> {
 
     public boolean hasChild(){
 	return (!(childVect.isEmpty()));
+    }
+
+    public int numChild(){
+	if (hasChild()){
+     	    return (childVect.size());
+	} else{ return 0;}
     }
     
     public void isWord(){
