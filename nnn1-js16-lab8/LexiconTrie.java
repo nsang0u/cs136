@@ -1,7 +1,20 @@
+/*
+  Noah Nsangou & Jae Mahn Surh
+  Thursday Afternoon
+  
+  A LexiconTrie class that allows the user to add words to the trie and is able to do a list of operations: removing words from the trie, returning whether the trie contains a certain word or prefix, suggest word corrections, and is able to match regular expressions.
+  
+  In our implementation of the LexiconNode, we constructed each node with a vector of 26 empty spots. Because each node has 26 spots, there is not much of a difference between our implementation and an OrderVector, as both have great amount of empty spots. However, the difference lies in the fact that we could change the nodes to start with an empty node and continually get bigger with every addition. We decided against it, for searching for a child would have gotten much longer than the constant time that we have. Because our trie is very similar to an OrderedVector, there is not much of a difference. Both our trie and an OrderedVector are able to find their children in constant time.
+
+
+ */
+
+
 import structure5.*;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.io.File;
+import java.util.HashSet;
 
 public class LexiconTrie implements Lexicon {
 
@@ -13,10 +26,8 @@ public class LexiconTrie implements Lexicon {
     
     public boolean addWord(String word) {
 	if (containsWord(word)){
-	    //System.out.println("contains word");
 	    return false;
 	} else if (word.isEmpty()){
-	    //System.out.println("is empty");
 	    return false;
 	}
 	wordCount++;
@@ -88,7 +99,6 @@ public class LexiconTrie implements Lexicon {
 	    return false;
 	}
 	if (word.length() == 1){
-	    //System.out.println("got to word length is 1");
 	    Character tempChar = word.charAt(0);
 	    word = "";
 	    return containsWordHelper(word, current.getChild(tempChar));
@@ -145,37 +155,85 @@ public class LexiconTrie implements Lexicon {
     }
 	
     
-    public Set<String> suggestCorrections(String target, int maxDistance) { return null; }
+    public Vector<String> suggestCorrections(String target, int maxDistance) {
+	Vector<String> correctVect = new Vector<String>();
+	String buildString = "";
+	for (int i = 0; i < 26; i++){
+	    if (root.childVect.get(i) != null){
+		System.out.println(maxDistance);
+		suggestCorrectionsHelper(target, maxDistance, buildString, root.childVect.get(i), correctVect);
+	    }
+	}
+	System.out.println(correctVect);
+	return correctVect;
+    }
     
-    public Set<String> matchRegex(String pattern){ return null; }
+    public void suggestCorrectionsHelper(String target, int maxDistance, String buildString, LexiconNode current, Vector<String> buildVect){
+	if (target.length() == 1) {
+	    if ((maxDistance > 0) && (current.isWord)){
+		buildString = buildString + current.letter();
+		buildVect.add(buildString);
+	    }
+	    return;
+	} else if ((maxDistance < 0) && (target.length() != 0)){
+	    return;
+	} else if (current.letter() == target.charAt(0)){
+	    buildString = buildString + current.letter();
+	} else if (current.letter() != target.charAt(0)){
+	    maxDistance--;
+	    buildString = buildString + current.letter();
+	}
+	for (int i = 0; i < 26; i++){
+	    if (current.childVect.get(i) != null){
+		suggestCorrectionsHelper(target.substring(1), maxDistance, buildString, current.childVect.get(i), buildVect);
+		
+	    }
+	}
+    }
     
-    
-    
-    public static void main(String args[]){
-	LexiconTrie test = new LexiconTrie();
-	test.root = new LexiconNode('0', false);
-	test.addWord("are");
-	test.addWord("a");
-	test.addWord("as");
-	test.addWord("ask");
-	System.out.println(test.containsWord("are"));
-	System.out.println(test.containsWord("aztec"));
-	(test.root).print();
+       
+    public HashSet<String> matchRegex(String pattern){
+	String buildString = "";
+	HashSet<String> buildSet = new HashSet<String>(); 
+	matchRegexHelper(pattern, buildString, root, buildSet);
+	return buildSet;
+    }
 
-	//test.addWordsFromFile("/Network/Servers/fuji.cs.williams.edu/Volumes/Users2/20nnn1/cs/cs136/nnn1-js16-lab8/smallIn.txt");
-
-	System.out.println(test.wordCount);
-	//test.removeWord("are");
-	//test.removeWord("as");
-	System.out.println("\n" + test.containsWord("are"));
-	System.out.println(test.containsWord("as"));
-	System.out.println(test.containsWord("ask"));
-	System.out.println(test.wordCount);
-
-	//Iterator<String> iterTest = new Iterator<String>();
-	Iterator<String> iterTest = test.iterator();
-	while (iterTest.hasNext()){
-	    System.out.println(iterTest.next());
+    public void matchRegexHelper(String pattern, String buildString, LexiconNode current, HashSet<String> buildSet){
+	if (pattern.length() == 0){
+	    if (current.isWord){
+		buildSet.add(buildString);
+	    }
+	} else if (pattern.charAt(0) == '*'){
+	    for( int i = 0; i < 26; i++){
+		if (current.childVect.get(i) != null){
+		    if (current.childVect.get(i).numChild() == 0) {
+			buildString = stringHolder + current.childVect.get(i).letter();
+			buildSet.add(buildString);
+		    }else{
+			buildString = stringHolder + current.childVect.get(i).letter();
+			matchRegexHelper(pattern, buildString, current.childVect.get(i), buildSet);
+		    }
+		}
+	    } 
+	    matchRegexHelper(pattern.substring(1), buildString, current, buildSet);
+	} else if (pattern.charAt(0) == '?'){
+	    for (int i = 0; i < 26; i++){
+		if (current.childVect.get(i) != null) {
+		    matchRegexHelper(pattern.substring(1), buildString + current.childVect.get(i).letter(), current.childVect.get(i), buildSet);
+		}
+	    }
+	    matchRegexHelper(pattern.substring(1), buildString, current, buildSet);
+	}
+	else {
+	    if (current.getChild(pattern.charAt(0)) != null){ //case for if regex char == current char
+		buildString = buildString + pattern.charAt(0);
+		if (pattern.length() == 1){
+		    matchRegexHelper("", buildString, current.getChild(pattern.charAt(0)), buildSet);
+		} else {
+		    matchRegexHelper(pattern.substring(1), buildString, current.getChild(pattern.charAt(0)), buildSet);
+		}
+	    }
 	}
     }
 }

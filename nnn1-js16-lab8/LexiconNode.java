@@ -1,11 +1,11 @@
-import structure5.*;
+OAimport structure5.*;
 import java.util.Iterator;
 
 class LexiconNode implements Comparable<LexiconNode> {
     char letter;
     boolean isWord;
    
-    /* TODO: a data structure for keeping track of the children of
+    /* a data structure for keeping track of the children of
 	   this LexiconNode */
     Vector<LexiconNode> childVect;
 
@@ -37,9 +37,6 @@ class LexiconNode implements Comparable<LexiconNode> {
 	 * TODO: Add LexiconNode child to correct position in child data structure
 	 */
     public void addChild(LexiconNode ln) {
-	//if (childVect.capacity() == 0){ 
-	//    childVect.add(null);
-	//}
 	childVect.add((Character.getNumericValue(ln.letter()) - 10), ln);
     }
     
@@ -56,29 +53,17 @@ class LexiconNode implements Comparable<LexiconNode> {
 	 */
     public void removeChild(char ch) {
 	int pos = ch - 'a';
-	//childVect.set(Character.getNumericValue(ch) - 10, null); //10 because -9 in unicode and then -1 for vector index
-	//System.out.println(pos);
-	//System.out.println("print before remove child: ");
-	//print();
 	childVect.remove(pos);
 	childVect.add(pos, null);
-	//System.out.println("print after remove/add");
-	//print();
     }
 
     /**
-	 * TODO: create an Iterator that iterates over children in alphabetical order
 	 */
-    //public Iterator<LexiconNode> iterator() {
+    public Iterator<LexiconNode> iterator() {
 	
 	
-    //}
-
+	//rather created a print method than an iterator.
     public void print(){
-	//System.out.println(childVect);
-	//System.out.println(isWord);
-	//System.out.println();
-
 	for (int i = 0; i < 26; i++){
 	    System.out.print(childVect.get(i) + " ");
 	}
@@ -98,11 +83,4 @@ class LexiconNode implements Comparable<LexiconNode> {
 	isWord = true;
     }
     
-    public static void main(String[] args){
-	LexiconNode test = new LexiconNode('a', false);
-	LexiconNode testChild = new LexiconNode('c', true);
-	test.addChild(testChild);
-	test.print();
-    }
-	
 }

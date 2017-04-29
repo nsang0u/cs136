@@ -1,6 +1,6 @@
 import structure5.*;
 import java.util.Iterator;
-
+import java.util.HashSet;
 /*
  * This interface is used to represent a lexicon, or word list. The main
  * difference between the lexicon abstraction and a dictionary is that 
@@ -116,7 +116,7 @@ public interface Lexicon {
      * @return a pointer to a complete set of strings that are
 	 * within @maxDistance of @target.
      */
-    public Set<String> suggestCorrections(String target, int maxDistance);
+    public Vector<String> suggestCorrections(String target, int maxDistance);
 	
 
     /**
@@ -127,7 +127,7 @@ public interface Lexicon {
 	 * @return a pointer to a complete set of strings from this
      * lexicon that match the regular expression @pattern.
      */
-    public Set<String> matchRegex(String pattern);
+    public HashSet<String> matchRegex(String pattern);
     	
 }
 
